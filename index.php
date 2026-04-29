@@ -9,17 +9,13 @@ include 'includes/header.php';
     
     <?php if (isset($_SESSION['user_id'])): ?>
         <p>Hello, <?php echo $_SESSION['fullname']; ?>!</p>
-        <div class="menu">
-            <a href="profile.php">My Profile</a>
-            <a href="movies/index.php">Browse Movies</a>
-            <a href="watchlist/index.php">My Watchlist</a>
-            <a href="logout.php">Logout</a>
-        </div>
+        <p>Start exploring movies and building your watchlist.</p>
     <?php else: ?>
-        <div class="menu">
-            <a href="login.php">Login</a>
-            <a href="register.php">Register</a>
-            <a href="movies/index.php">Browse Movies</a>
+        <p>Please login or register to start managing your movie watchlist.</p>
+        <div class="menu" style="margin-top: 20px;">
+            <a href="login.php" class="btn btn-primary">Login</a>
+            <a href="register.php" class="btn btn-secondary">Register</a>
+            <a href="movies/index.php" class="btn btn-secondary">Browse Movies</a>
         </div>
     <?php endif; ?>
 </div>

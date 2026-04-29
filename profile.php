@@ -20,34 +20,43 @@ $user = mysqli_fetch_assoc($result);
 <div class="container">
     <h1>My Profile</h1>
     
-    <table style="width: 100%; border-collapse: collapse;">
+    <div class="profile-card">
+        <div class="profile-stats">
+            <div class="stat">
+                <div class="stat-number"><?php echo $user['UserID']; ?></div>
+                <div class="stat-label">User ID</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number"><?php echo $user['CreatedDate']; ?></div>
+                <div class="stat-label">Member Since</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number"><?php echo $user['LastLoginDate'] ? $user['LastLoginDate'] : 'Never'; ?></div>
+                <div class="stat-label">Last Login</div>
+            </div>
+        </div>
+    </div>
+    
+    <table style="width: 100%; border-collapse: collapse; background: #1a2024; border-radius: 12px; overflow: hidden;">
         <tr>
-            <td style="padding: 10px; background: #f4f4f4; width: 150px;"><strong>Full Name:</strong></td>
-            <td style="padding: 10px;"><?php echo $user['FullName']; ?></td>
+            <td style="padding: 15px; background: #2c353d; width: 150px;"><strong>Full Name:</strong></td>
+            <td style="padding: 15px;"><?php echo $user['FullName']; ?></td>
         </tr>
         <tr>
-            <td style="padding: 10px; background: #f4f4f4;"><strong>Email:</strong></td>
-            <td style="padding: 10px;"><?php echo $user['Email']; ?></td>
+            <td style="padding: 15px; background: #2c353d;"><strong>Email:</strong></td>
+            <td style="padding: 15px;"><?php echo $user['Email']; ?></td>
         </tr>
         <tr>
-            <td style="padding: 10px; background: #f4f4f4;"><strong>Member Since:</strong></td>
-            <td style="padding: 10px;"><?php echo $user['CreatedDate']; ?></td>
-        </tr>
-        <tr>
-            <td style="padding: 10px; background: #f4f4f4;"><strong>Last Login:</strong></td>
-            <td style="padding: 10px;"><?php echo $user['LastLoginDate'] ? $user['LastLoginDate'] : 'Never'; ?></td>
-        </tr>
-        <tr>
-            <td style="padding: 10px; background: #f4f4f4;"><strong>Status:</strong></td>
-            <td style="padding: 10px;"><?php echo $user['IsActive'] ? 'Active' : 'Inactive'; ?></td>
+            <td style="padding: 15px; background: #2c353d;"><strong>Status:</strong></td>
+            <td style="padding: 15px;"><?php echo $user['IsActive'] ? '<span style="color: #28a745;">✅ Active</span>' : '<span style="color: #dc3545;">❌ Inactive</span>'; ?></td>
         </tr>
     </table>
     
-    <div class="menu" style="margin-top: 20px;">
-        <a href="edit_profile.php">Edit Profile</a>
-        <a href="change_password.php">Change Password</a>
-        <a href="delete_account.php">Delete Account</a>
-        <a href="index.php">Back to Home</a>
+    <div class="menu" style="margin-top: 30px; display: flex; gap: 15px;">
+        <a href="edit_profile.php" class="btn btn-primary">✏️ Edit Profile</a>
+        <a href="change_password.php" class="btn btn-secondary">🔒 Change Password</a>
+        <a href="delete_account.php" class="btn btn-danger">🗑️ Delete Account</a>
+        <a href="index.php" class="btn btn-secondary">← Back to Home</a>
     </div>
 </div>
 
