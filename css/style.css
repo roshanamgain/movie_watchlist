@@ -7,6 +7,12 @@
     box-sizing: border-box;
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #14181c;
+}
+
 body {
     font-family: 'DM Sans', sans-serif;
     background: #14181c;
@@ -20,72 +26,125 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
-   NAVIGATION BAR
+   NAVIGATION BAR - ON TOP OF IMAGE
    ============================================ */
 .navbar {
-    background: rgba(20, 24, 28, 0.95);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid #2c3440;
-    padding: 16px 60px;
-    position: sticky;
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
+    padding: 20px 60px;
+    position: absolute;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .logo {
     font-family: 'Libre Baskerville', serif;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: #ffffff;
     text-decoration: none;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
 .nav-links {
     display: flex;
-    gap: 32px;
+    gap: 25px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .nav-links a {
-    color: #99aabb;
+    color: #ffffff;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: color 0.15s ease;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
 .nav-links a:hover {
-    color: #ffffff;
+    color: #c41e3a;
 }
 
-.btn-join {
+.btn-create {
     background: #c41e3a;
     color: white !important;
-    padding: 8px 20px;
-    border-radius: 30px;
+    padding: 8px 16px;
+    border-radius: 4px;
     font-weight: 600;
+    text-shadow: none;
+}
+
+.btn-create:hover {
+    background: #a01830;
+    color: white !important;
+}
+
+/* Search Bar */
+.search-input {
+    background: rgba(44, 52, 64, 0.8);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    color: white;
+    width: 160px;
+}
+
+.search-input:focus {
+    outline: none;
+    border: 1px solid #c41e3a;
+}
+
+.search-input::placeholder {
+    color: #99aabb;
+}
+
+
+/* ============================================
+   SOCIAL TEXT SECTION
+   ============================================ */
+.social-text-section {
+    background: #1c2228;
+    padding: 20px 20px;
+    text-align: center;
+}
+
+.social-text {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.0rem;
+    color: #ffffff;
+    letter-spacing: 1px;
+    margin: 8px;
+    line-height: 1.4;
 }
 
 /* ============================================
-   HERO SECTION - FULL SCREEN BACKGROUND
+   HERO SECTION - STARTS FROM TOP
    ============================================ */
 .hero-section {
     position: relative;
     width: 100%;
     height: 100vh;
+    min-height: 500px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    text-align: center;
+    padding-bottom: 10px;
+    margin: 0;
+    top: 0;
 }
 
-/* Dark overlay for text readability */
+/* Dark fade overlay */
 .hero-section::before {
     content: '';
     position: absolute;
@@ -93,67 +152,43 @@ h1, h2, h3, h4, h5, h6 {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.8) 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
+    z-index: 1;
 }
 
+
+/* Hero content */
 .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 800px;
-    padding: 20px;
+    text-align: center;
 }
 
-.hero-section h1 {
-    font-size: 5rem;
-    margin-bottom: 20px;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+.hero-title {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    line-height: 1.4;
 }
 
-.hero-section p {
-    font-size: 1.5rem;
-    margin-bottom: 35px;
-    text-shadow: 0 1px 10px rgba(0,0,0,0.8);
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-/* Money Heist Buttons */
-.btn-heist {
+.hero-btn {
     background: #c41e3a;
     color: white;
-    padding: 12px 32px;
+    padding: 14px 32px;
     border-radius: 40px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 1.1rem;
     display: inline-block;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.btn-heist:hover {
+.hero-btn:hover {
     background: #a01830;
-    transform: translateY(-2px);
-}
-
-.btn-outline-heist {
-    background: transparent;
-    color: #d4af37;
-    border: 2px solid #d4af37;
-    padding: 12px 32px;
-    border-radius: 40px;
-    text-decoration: none;
-    font-weight: 600;
-    display: inline-block;
-    transition: all 0.2s ease;
-}
-
-.btn-outline-heist:hover {
-    background: rgba(212, 175, 55, 0.1);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* ============================================
@@ -173,7 +208,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .stat-number {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #c41e3a;
     font-family: 'Libre Baskerville', serif;
@@ -182,15 +217,16 @@ h1, h2, h3, h4, h5, h6 {
 .stat-label {
     color: #556677;
     margin-top: 8px;
+    font-size: 0.9rem;
 }
 
 /* ============================================
    MOVIE SECTION
    ============================================ */
 .movie-section {
+    background: #1c2228;
     padding: 48px 60px;
 }
-
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -199,21 +235,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 600;
+    letter-spacing: 1px;
+    color: #ffffff;
 }
 
 .section-link {
     color: #99aabb;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .section-link:hover {
     color: #ffffff;
 }
 
-/* Film Strip - Horizontal Scroll */
 .film-strip {
     display: flex;
     gap: 16px;
@@ -235,10 +272,9 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 3px;
 }
 
-/* Movie Cards */
 .movie-card {
-    min-width: 160px;
-    width: 160px;
+    min-width: 140px;
+    width: 140px;
     background: #242c34;
     border-radius: 8px;
     overflow: hidden;
@@ -252,7 +288,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .movie-poster {
     width: 100%;
-    height: 240px;
+    height: 210px;
     background: #1c2228;
     display: flex;
     align-items: center;
@@ -266,17 +302,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .movie-poster-placeholder {
-    font-size: 3rem;
+    font-size: 2.5rem;
     opacity: 0.5;
 }
 
 .movie-info {
-    padding: 12px;
+    padding: 10px;
 }
 
 .movie-title {
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #ffffff;
     white-space: nowrap;
     overflow: hidden;
@@ -284,16 +320,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .movie-year {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #556677;
+    margin-top: 4px;
 }
 
 .movie-rating {
-    margin-top: 8px;
-    font-size: 0.75rem;
-}
-
-.stars {
+    margin-top: 4px;
+    font-size: 0.7rem;
     color: #d4af37;
 }
 
@@ -323,21 +357,24 @@ h1, h2, h3, h4, h5, h6 {
 .review-author {
     font-weight: 600;
     color: #ffffff;
+    font-size: 0.9rem;
 }
 
 .review-rating {
     color: #d4af37;
+    font-size: 0.85rem;
 }
 
 .review-text {
     color: #99aabb;
     margin-bottom: 12px;
     line-height: 1.6;
+    font-size: 0.9rem;
 }
 
 .review-likes {
     color: #c41e3a;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
 }
 
 /* ============================================
@@ -347,6 +384,7 @@ h1, h2, h3, h4, h5, h6 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
+    margin-top: 20px;
 }
 
 .list-card {
@@ -386,7 +424,40 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
-   FORMS (Login/Register)
+   FOOTER
+   ============================================ */
+.footer {
+    background: #1c2228;
+    padding: 40px 60px 30px;
+    border-top: 1px solid #2c3440;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 24px;
+    justify-content: center;
+}
+
+.footer-links a {
+    color: #556677;
+    text-decoration: none;
+    font-size: 0.75rem;
+}
+
+.footer-links a:hover {
+    color: #99aabb;
+}
+
+.footer p {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #556677;
+}
+
+/* ============================================
+   FORMS
    ============================================ */
 .form-container {
     max-width: 400px;
@@ -453,81 +524,280 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
-   PROFILE PAGE
+   MODAL STYLES
    ============================================ */
-.profile-card {
-    background: #242c34;
-    border-radius: 16px;
-    padding: 32px;
-    margin-bottom: 24px;
-}
-
-.profile-stats {
-    display: flex;
-    gap: 40px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
-
-/* ============================================
-   FOOTER
-   ============================================ */
-.footer {
-    background: #1c2228;
-    padding: 48px 60px 32px;
-    border-top: 1px solid #2c3440;
-    margin-top: 40px;
-}
-
-.footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    margin-bottom: 24px;
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    align-items: center;
     justify-content: center;
 }
 
-.footer-links a {
-    color: #556677;
+.modal-content {
+    background: #1c2228;
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 420px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #99aabb;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: #c41e3a;
+}
+
+.modal-logo {
+    text-align: center;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #00e054;
+    margin-bottom: 20px;
+}
+
+.modal-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 25px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 15px;
+    background: #2c3440;
+    border: 1px solid #3a454d;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+.modal-content input:focus {
+    outline: none;
+    border-color: #c41e3a;
+}
+
+.modal-content input::placeholder {
+    color: #99aabb;
+}
+
+.modal-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 0.85rem;
+    color: #99aabb;
+}
+
+.modal-options a {
+    color: #c41e3a;
     text-decoration: none;
+}
+
+.modal-options a:hover {
+    text-decoration: underline;
+}
+
+.terms-checkbox {
+    margin: 15px 0;
+    color: #99aabb;
     font-size: 0.8rem;
 }
 
-.footer-links a:hover {
-    color: #ffffff;
+.terms-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
 }
 
-.footer p {
+.modal-btn {
+    width: 100%;
+    padding: 12px;
+    background: #c41e3a;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-btn:hover {
+    background: #a01830;
+    transform: translateY(-2px);
+}
+
+.modal-footer {
     text-align: center;
-    font-size: 0.75rem;
-    color: #556677;
+    margin-top: 25px;
+    color: #99aabb;
+    font-size: 0.85rem;
+}
+
+.modal-footer a {
+    color: #00e054;
+    text-decoration: none;
+}
+
+.modal-footer a:hover {
+    text-decoration: underline;
 }
 
 /* ============================================
-   RESPONSIVE DESIGN
+   SOCIAL BUTTON (Get Started)
+   ============================================ */
+.social-btn {
+    display: inline-block;
+    background: #c41e3a;
+    color: white;
+    padding: 14px 32px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 25px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.social-btn:hover {
+    background: #a01830;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   ERROR MESSAGE STYLES FOR MODALS
+   ============================================ */
+.modal-error {
+    background: rgba(196, 30, 58, 0.2);
+    border: 1px solid #c41e3a;
+    color: #ff6666;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+.error-text {
+    flex: 1;
+}
+
+.error-close {
+    background: none;
+    border: none;
+    color: #ff6666;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 5px;
+    transition: color 0.2s;
+}
+
+.error-close:hover {
+    color: #c41e3a;
+}
+
+/* ============================================
+   CHECKBOX LABEL STYLES
+   ============================================ */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: #99aabb;
+}
+
+.checkbox-label input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.terms-group {
+    margin-bottom: 20px;
+}
+
+.terms-group .checkbox-label {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.terms-group .checkbox-label input {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+}
+
+.terms-group a {
+    color: #00e054;
+    text-decoration: none;
+}
+
+.terms-group a:hover {
+    text-decoration: underline;
+}
+
+/* ============================================
+   RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {
     .navbar {
-        padding: 12px 20px;
+        padding: 15px 20px;
         flex-direction: column;
+        gap: 12px;
     }
     
     .nav-links {
-        flex-wrap: wrap;
         justify-content: center;
         gap: 16px;
     }
     
     .hero-section {
-        height: 70vh;
+        height: 60vh;
+        min-height: 400px;
+        padding-bottom: 50px;
     }
     
-    .hero-section h1 {
-        font-size: 2.5rem;
+    .hero-title {
+        font-size: 1.5rem;
     }
     
-    .hero-section p {
-        font-size: 1rem;
+    .hero-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
     }
     
     .movie-section, .reviews-section {
@@ -543,24 +813,91 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .movie-card {
-        min-width: 130px;
-        width: 130px;
+        min-width: 120px;
+        width: 120px;
     }
     
     .movie-poster {
-        height: 195px;
+        height: 180px;
     }
     
     .footer {
         padding: 32px 20px;
     }
     
-    .hero-buttons {
-        gap: 12px;
+    .search-input {
+        width: 120px;
     }
     
-    .btn-heist, .btn-outline-heist {
+    .modal-content {
+        padding: 30px 20px;
+    }
+    
+    .social-btn {
         padding: 10px 20px;
         font-size: 0.9rem;
     }
+}
+
+/* Logged In User Styles */
+.user-stats-section {
+    background: #1c2228;
+    padding: 40px 60px;
+    text-align: center;
+    border-bottom: 1px solid #2c3440;
+}
+
+.user-stats-grid {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    flex-wrap: wrap;
+}
+
+.user-stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00e054;
+    font-family: 'Libre Baskerville', serif;
+}
+
+.user-stat-label {
+    color: #99aabb;
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: #ffffff;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+    margin-top: 10px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.watchlist-status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.status-to-watch {
+    background: #f5c518;
+    color: #14181c;
+}
+
+.status-watching {
+    background: #00c2ff;
+    color: #14181c;
+}
+
+.status-watched {
+    background: #00e054;
+    color: #14181c;
 }

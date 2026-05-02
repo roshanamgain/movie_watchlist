@@ -15,48 +15,112 @@ $stmt = $pdo->query("
 ");
 $recentReviews = $stmt->fetchAll();
 
-// Money Heist hero image path
-$heroImage = '/movie_watchlist/images/bg-image.avif';
+// Get user stats if logged in
+if (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
+    $stmt = $pdo->prepare("SELECT COUNT(*) as watchlist_count FROM tblwatchlist WHERE UserID = ?");
+    $stmt->execute([$userId]);
+    $watchlistCount = $stmt->fetch()['watchlist_count'];
+    
+    $stmt = $pdo->prepare("SELECT COUNT(*) as watched_count FROM tblwatchlist WHERE UserID = ? AND Status = 'Watched'");
+    $stmt->execute([$userId]);
+    $watchedCount = $stmt->fetch()['watched_count'];
+    
+    $stmt = $pdo->prepare("SELECT COUNT(*) as review_count FROM tblreview WHERE UserID = ?");
+    $stmt->execute([$userId]);
+    $reviewCount = $stmt->fetch()['review_count'];
+}
+
+// Set different hero images based on login status
+$loggedOutHeroImage = '/movie_watchlist/images/bg-image.jpg';
+$loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
 ?>
 
 <?php include 'includes/header.php'; ?>
 
-<!-- Hero Section - Full Screen Background (Matches your CSS) -->
-<div class="hero-section" style="background-image: url('<?php echo $heroImage; ?>');">
-    <div class="hero-content">
-        <h1>La Casa de Papel</h1>
-        <p>Track films you've watched. Save those you want to see. Tell your friends what's good.</p>
-        <div class="hero-buttons">
-            <a href="register.php" class="btn-heist">Join the Heist — It's free!</a>
-            <a href="movies/index.php" class="btn-outline-heist">Browse Films</a>
+<?php if (isset($_SESSION['user_id'])): ?>
+    <!-- ============================================ -->
+    <!-- LOGGED IN USER VIEW (Letterboxd Style)        -->
+    <!-- ============================================ -->
+    
+    <!-- Hero Section - Different cover for logged in users -->
+    <div class="hero-section" style="background-image: url('<?php echo $loggedInHeroImage; ?>');">
+        <div class="hero-content">
+            <h1 class="hero-title">That's good! You've taken your<br>first step into a larger world...</h1>
+            <p class="hero-subtitle">
+                MovieWatchlist lets you keep track of every film you’ve seen, so you can instantly recommend one when someone asks, or check reactions to a film you’ve just heard about.
+            </p>
         </div>
     </div>
-</div>
 
-<div class="stats-section">
-    <div class="stats-grid">
-        <div class="stat">
-            <div class="stat-number">3.5B+</div>
-            <div class="stat-label">films watched</div>
-        </div>
-        <div class="stat">
-            <div class="stat-number">1.2M+</div>
-            <div class="stat-label">members</div>
-        </div>
-        <div class="stat">
-            <div class="stat-number">500K+</div>
-            <div class="stat-label">reviews</div>
+    <!-- User Stats Section -->
+    <div class="user-stats-section">
+        <div class="user-stats-grid">
+            <div class="user-stat">
+                <div class="user-stat-number"><?php echo $watchlistCount; ?></div>
+                <div class="user-stat-label">in your watchlist</div>
+            </div>
+            <div class="user-stat">
+                <div class="user-stat-number"><?php echo $watchedCount; ?></div>
+                <div class="user-stat-label">films watched</div>
+            </div>
+            <div class="user-stat">
+                <div class="user-stat-number"><?php echo $reviewCount; ?></div>
+                <div class="user-stat-label">reviews written</div>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="movie-section">
-    <div class="section-header">
-        <h2 class="section-title">POPULAR THIS WEEK</h2>
-        <a href="movies/index.php" class="section-link">ALL FILMS →</a>
+    <!-- Recent Activity Section -->
+    <div class="movie-section">
+        <div class="section-header">
+            <h2 class="section-title">RECENT ACTIVITY</h2>
+            <a href="watchlist/index.php" class="section-link">VIEW ALL →</a>
+        </div>
+        <div class="film-strip">
+            <?php
+            $stmt = $pdo->prepare("
+                SELECT w.*, m.Title, m.ReleaseYear, m.PosterURL 
+                FROM tblwatchlist w 
+                JOIN tblmovie m ON w.MovieID = m.MovieID 
+                WHERE w.UserID = ? 
+                ORDER BY w.AddedDate DESC LIMIT 8
+            ");
+            $stmt->execute([$userId]);
+            $recentActivity = $stmt->fetchAll();
+            ?>
+            <?php if (count($recentActivity) > 0): ?>
+                <?php foreach ($recentActivity as $item): ?>
+                <div class="movie-card" onclick="location.href='movies/details.php?id=<?php echo $item['MovieID']; ?>'">
+                    <div class="movie-poster">
+                        <?php if (!empty($item['PosterURL'])): ?>
+                            <img src="<?php echo $item['PosterURL']; ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" class="movie-poster-img">
+                        <?php else: ?>
+                            <span class="movie-poster-placeholder">🎬</span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="movie-info">
+                        <div class="movie-title"><?php echo htmlspecialchars($item['Title']); ?></div>
+                        <div class="movie-year"><?php echo $item['ReleaseYear']; ?></div>
+                        <div class="watchlist-status-badge status-<?php echo strtolower(str_replace(' ', '-', $item['Status'])); ?>">
+                            <?php echo $item['Status']; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p style="color: #99aabb;">Your watchlist is empty. <a href="movies/index.php" style="color: #00e054;">Browse movies</a> to get started!</p>
+            <?php endif; ?>
+        </div>
     </div>
-    <div class="film-strip">
-        <?php if (count($popularFilms) > 0): ?>
+
+    <!-- Popular Films Section -->
+    <div class="movie-section">
+        <div class="section-header">
+            <h2 class="section-title">POPULAR THIS WEEK</h2>
+            <a href="movies/index.php" class="section-link">ALL FILMS →</a>
+        </div>
+        <div class="film-strip">
             <?php foreach ($popularFilms as $film): ?>
             <div class="movie-card" onclick="location.href='movies/details.php?id=<?php echo $film['MovieID']; ?>'">
                 <div class="movie-poster">
@@ -69,25 +133,63 @@ $heroImage = '/movie_watchlist/images/bg-image.avif';
                 <div class="movie-info">
                     <div class="movie-title"><?php echo htmlspecialchars($film['Title']); ?></div>
                     <div class="movie-year"><?php echo $film['ReleaseYear']; ?></div>
-                    <div class="movie-rating">
-                        <span class="stars">★</span>
-                        <span><?php echo $film['TMDBRating']; ?>/10</span>
-                    </div>
+                    <div class="movie-rating">⭐ <?php echo $film['TMDBRating']; ?>/10</div>
                 </div>
             </div>
             <?php endforeach; ?>
-        <?php else: ?>
-            <p>No movies found. Please add movies to the database.</p>
-        <?php endif; ?>
+        </div>
     </div>
-</div>
 
-<div class="reviews-section">
-    <div class="section-header">
-        <h2 class="section-title">POPULAR REVIEWS THIS WEEK</h2>
-        <a href="#" class="section-link">MORE →</a>
+<?php else: ?>
+    <!-- ============================================ -->
+    <!-- LOGGED OUT USER VIEW                          -->
+    <!-- ============================================ -->
+    
+    <!-- Hero Section - Money Heist cover for logged out users -->
+    <div class="hero-section" style="background-image: url('<?php echo $loggedOutHeroImage; ?>');">
+        <div class="hero-content">
+            <h1 class="hero-title">Track films you've watched.<br>Save those you want to see.<br>Tell your friends what's good.</h1>
+        </div>
     </div>
-    <?php if (count($recentReviews) > 0): ?>
+
+    <!-- Call to Action Section -->
+    <div class="social-text-section">
+        <a href="javascript:void(0)" class="social-btn" id="heroGetStartedBtn">GET STARTED — IT'S FREE!</a>
+        <p class="social-text">The social network for film lovers.</p>
+    </div>
+
+    <!-- Popular Films Section -->
+    <div class="movie-section">
+        <div class="section-header">
+            <h2 class="section-title">POPULAR THIS WEEK</h2>
+            <a href="movies/index.php" class="section-link">ALL FILMS →</a>
+        </div>
+        <div class="film-strip">
+            <?php foreach ($popularFilms as $film): ?>
+            <div class="movie-card" onclick="location.href='movies/details.php?id=<?php echo $film['MovieID']; ?>'">
+                <div class="movie-poster">
+                    <?php if (!empty($film['PosterURL'])): ?>
+                        <img src="<?php echo $film['PosterURL']; ?>" alt="<?php echo htmlspecialchars($film['Title']); ?>" class="movie-poster-img">
+                    <?php else: ?>
+                        <span class="movie-poster-placeholder">🎬</span>
+                    <?php endif; ?>
+                </div>
+                <div class="movie-info">
+                    <div class="movie-title"><?php echo htmlspecialchars($film['Title']); ?></div>
+                    <div class="movie-year"><?php echo $film['ReleaseYear']; ?></div>
+                    <div class="movie-rating">⭐ <?php echo $film['TMDBRating']; ?>/10</div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section">
+        <div class="section-header">
+            <h2 class="section-title">POPULAR REVIEWS THIS WEEK</h2>
+            <a href="#" class="section-link">MORE →</a>
+        </div>
         <?php foreach ($recentReviews as $review): ?>
         <div class="review-card">
             <div class="review-header">
@@ -98,46 +200,233 @@ $heroImage = '/movie_watchlist/images/bg-image.avif';
             <div class="review-likes">❤️ <?php echo rand(10, 500); ?> likes</div>
         </div>
         <?php endforeach; ?>
-    <?php else: ?>
-        <div class="review-card">
-            <div class="review-header">
-                <span class="review-author">MovieFan</span>
-                <span class="review-rating">⭐ 9.5/10</span>
-            </div>
-            <div class="review-text">"An absolute masterpiece! Highly recommend watching this film."</div>
-            <div class="review-likes">❤️ 247 likes</div>
-        </div>
-    <?php endif; ?>
-</div>
+    </div>
 
-<div class="movie-section">
-    <div class="section-header">
-        <h2 class="section-title">POPULAR LISTS</h2>
-        <a href="#" class="section-link">MORE →</a>
+    <!-- Lists Section -->
+    <div class="movie-section">
+        <div class="section-header">
+            <h2 class="section-title">POPULAR LISTS</h2>
+            <a href="#" class="section-link">MORE →</a>
+        </div>
+        <div class="lists-grid">
+            <div class="list-card">
+                <div class="list-header">🎬</div>
+                <div class="list-info">
+                    <div class="list-title">MovieWatchlist's Top 500 Films</div>
+                    <div class="list-stats">500 films • 374K likes</div>
+                </div>
+            </div>
+            <div class="list-card">
+                <div class="list-header">🚀</div>
+                <div class="list-info">
+                    <div class="list-title">The Best Sci-Fi Movies</div>
+                    <div class="list-stats">120 films • 89K likes</div>
+                </div>
+            </div>
+            <div class="list-card">
+                <div class="list-header">🏆</div>
+                <div class="list-info">
+                    <div class="list-title">Oscar Winners - Best Picture</div>
+                    <div class="list-stats">94 films • 156K likes</div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="lists-grid">
-        <div class="list-card">
-            <div class="list-header">🎬</div>
-            <div class="list-info">
-                <div class="list-title">MovieWatchlist's Top 500 Films</div>
-                <div class="list-stats">500 films • 374K likes</div>
-            </div>
-        </div>
-        <div class="list-card">
-            <div class="list-header">🚀</div>
-            <div class="list-info">
-                <div class="list-title">The Best Sci-Fi Movies</div>
-                <div class="list-stats">120 films • 89K likes</div>
-            </div>
-        </div>
-        <div class="list-card">
-            <div class="list-header">🏆</div>
-            <div class="list-info">
-                <div class="list-title">Oscar Winners - Best Picture</div>
-                <div class="list-stats">94 films • 156K likes</div>
-            </div>
-        </div>
-    </div>
-</div>
+
+<?php endif; ?>
+
+<style>
+/* Logged In User Styles */
+.user-stats-section {
+    background: #1c2228;
+    padding: 40px 60px;
+    text-align: center;
+    border-bottom: 1px solid #2c3440;
+}
+
+.user-stats-grid {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    flex-wrap: wrap;
+}
+
+.user-stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00e054;
+    font-family: 'Libre Baskerville', serif;
+}
+
+.user-stat-label {
+    color: #99aabb;
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+.hero-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #ffffff;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+    margin-top: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.watchlist-status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.status-to-watch {
+    background: #f5c518;
+    color: #14181c;
+}
+
+.status-watching {
+    background: #00c2ff;
+    color: #14181c;
+}
+
+.status-watched {
+    background: #00e054;
+    color: #14181c;
+}
+</style>
+
+<!-- JavaScript for Modals (only needed when logged out) -->
+<?php if (!isset($_SESSION['user_id'])): ?>
+<script>
+    const loginModal = document.getElementById('loginModal');
+    const signupModal = document.getElementById('signupModal');
+    const showLoginBtn = document.getElementById('showLoginBtn');
+    const showSignupBtn = document.getElementById('showSignupBtn');
+    const heroGetStartedBtn = document.getElementById('heroGetStartedBtn');
+    const closeLogin = document.getElementById('closeLogin');
+    const closeSignup = document.getElementById('closeSignup');
+    const switchToSignup = document.getElementById('switchToSignup');
+    const switchToLogin = document.getElementById('switchToLogin');
+
+    if (showLoginBtn) {
+        showLoginBtn.onclick = function(e) {
+            e.preventDefault();
+            loginModal.style.display = 'flex';
+        }
+    }
+
+    if (showSignupBtn) {
+        showSignupBtn.onclick = function(e) {
+            e.preventDefault();
+            signupModal.style.display = 'flex';
+        }
+    }
+
+    if (heroGetStartedBtn) {
+        heroGetStartedBtn.onclick = function(e) {
+            e.preventDefault();
+            signupModal.style.display = 'flex';
+        }
+    }
+
+    if (closeLogin) {
+        closeLogin.onclick = function() {
+            loginModal.style.display = 'none';
+        }
+    }
+    if (closeSignup) {
+        closeSignup.onclick = function() {
+            signupModal.style.display = 'none';
+        }
+    }
+
+    if (switchToSignup) {
+        switchToSignup.onclick = function(e) {
+            e.preventDefault();
+            loginModal.style.display = 'none';
+            signupModal.style.display = 'flex';
+        }
+    }
+    if (switchToLogin) {
+        switchToLogin.onclick = function(e) {
+            e.preventDefault();
+            signupModal.style.display = 'none';
+            loginModal.style.display = 'flex';
+        }
+    }
+
+    window.onclick = function(e) {
+        if (e.target == loginModal) {
+            loginModal.style.display = 'none';
+        }
+        if (e.target == signupModal) {
+            signupModal.style.display = 'none';
+        }
+    }
+
+    function showError(errorElement, errorTextElement, message) {
+        errorTextElement.textContent = message;
+        errorElement.style.display = 'flex';
+        setTimeout(function() {
+            errorElement.style.display = 'none';
+        }, 5000);
+    }
+
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.onsubmit = function(e) {
+            e.preventDefault();
+            const formData = new FormData(loginForm);
+            fetch('/movie_watchlist/login_process.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/movie_watchlist/index.php';
+                } else {
+                    showError(
+                        document.getElementById('loginError'),
+                        document.getElementById('loginErrorText'),
+                        data.error
+                    );
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+        signupForm.onsubmit = function(e) {
+            e.preventDefault();
+            const formData = new FormData(signupForm);
+            fetch('/movie_watchlist/register_process.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/movie_watchlist/index.php';
+                } else {
+                    showError(
+                        document.getElementById('signupError'),
+                        document.getElementById('signupErrorText'),
+                        data.error
+                    );
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
+<?php endif; ?>
 
 <?php include 'includes/footer.php'; ?>
