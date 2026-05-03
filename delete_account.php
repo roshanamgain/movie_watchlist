@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         if (mysqli_query($conn, $delete)) {
             session_destroy();
-            $success = 'Your account has been deleted. You will be redirected to home page.';
+            $success = 'Your account has been deleted. You will be redirected to the home page.';
             header('refresh:3;url=index.php');
         } else {
             $error = 'Account deletion failed: ' . mysqli_error($conn);
@@ -45,25 +45,117 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="container">
     <h1>Delete Account</h1>
     
-    <div class="error" style="background: #ffcccc; padding: 15px; margin-bottom: 20px;">
-        <strong>Warning!</strong> This action cannot be undone. All your data will be permanently deleted.
-    </div>
-    
     <?php if ($error): ?>
-        <div class="error"><?php echo $error; ?></div>
+        <div class="alert alert-error"><?php echo $error; ?></div>
     <?php endif; ?>
     
     <?php if ($success): ?>
-        <div class="success"><?php echo $success; ?></div>
+        <div class="alert alert-success"><?php echo $success; ?></div>
     <?php else: ?>
+        <div class="warning-box">
+            <strong>⚠️ Warning!</strong> This action cannot be undone. All your data will be permanently deleted.
+        </div>
+        
         <form method="POST">
-            <label>Enter your password to confirm account deletion:</label>
-            <input type="password" name="password" required>
+            <div class="form-group">
+                <label>Enter your password to confirm account deletion:</label>
+                <input type="password" name="password" required>
+            </div>
             
-            <button type="submit" style="background: #dc3545;">Permanently Delete My Account</button>
-            <a href="profile.php" style="margin-left: 10px;">Cancel</a>
+            <div class="button-group">
+                <button type="submit" class="btn-danger">Permanently Delete My Account</button>
+                <a href="profile.php" class="btn-cancel">Cancel</a>
+            </div>
         </form>
     <?php endif; ?>
 </div>
+
+<style>
+.container {
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 0 20px;
+}
+
+h1 {
+    color: #c41e3a;
+    margin-bottom: 20px;
+}
+
+.warning-box {
+    background: rgba(196, 30, 58, 0.15);
+    border: 1px solid #c41e3a;
+    color: #ff6666;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.alert {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.alert-error {
+    background: rgba(196, 30, 58, 0.15);
+    border: 1px solid #c41e3a;
+    color: #ff6666;
+}
+
+.alert-success {
+    background: rgba(0, 224, 84, 0.15);
+    border: 1px solid #00e054;
+    color: #00e054;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #99aabb;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    background: #2c3440;
+    border: 1px solid #3a454d;
+    border-radius: 8px;
+    color: white;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.btn-danger {
+    background: #c41e3a;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-danger:hover {
+    background: #a01830;
+}
+
+.btn-cancel {
+    color: #99aabb;
+    text-decoration: none;
+}
+
+.btn-cancel:hover {
+    color: #c41e3a;
+}
+</style>
 
 <?php include 'includes/footer.php'; ?>

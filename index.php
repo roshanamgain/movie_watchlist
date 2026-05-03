@@ -43,12 +43,12 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
     <!-- LOGGED IN USER VIEW (Letterboxd Style)        -->
     <!-- ============================================ -->
     
-    <!-- Hero Section - Different cover for logged in users -->
     <div class="hero-section" style="background-image: url('<?php echo $loggedInHeroImage; ?>');">
         <div class="hero-content">
             <h1 class="hero-title">That's good! You've taken your<br>first step into a larger world...</h1>
             <p class="hero-subtitle">
-                MovieWatchlist lets you keep track of every film you’ve seen, so you can instantly recommend one when someone asks, or check reactions to a film you’ve just heard about.
+                MovieWatchlist lets you keep track of every film you've seen, so you can instantly recommend<br>
+                one the moment someone asks, or check reactions to a film you've just heard about.
             </p>
         </div>
     </div>
@@ -145,20 +145,17 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
     <!-- LOGGED OUT USER VIEW                          -->
     <!-- ============================================ -->
     
-    <!-- Hero Section - Money Heist cover for logged out users -->
     <div class="hero-section" style="background-image: url('<?php echo $loggedOutHeroImage; ?>');">
         <div class="hero-content">
             <h1 class="hero-title">Track films you've watched.<br>Save those you want to see.<br>Tell your friends what's good.</h1>
         </div>
     </div>
 
-    <!-- Call to Action Section -->
     <div class="social-text-section">
         <a href="javascript:void(0)" class="social-btn" id="heroGetStartedBtn">GET STARTED — IT'S FREE!</a>
         <p class="social-text">The social network for film lovers.</p>
     </div>
 
-    <!-- Popular Films Section -->
     <div class="movie-section">
         <div class="section-header">
             <h2 class="section-title">POPULAR THIS WEEK</h2>
@@ -184,7 +181,6 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
         </div>
     </div>
 
-    <!-- Reviews Section -->
     <div class="reviews-section">
         <div class="section-header">
             <h2 class="section-title">POPULAR REVIEWS THIS WEEK</h2>
@@ -202,7 +198,6 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
         <?php endforeach; ?>
     </div>
 
-    <!-- Lists Section -->
     <div class="movie-section">
         <div class="section-header">
             <h2 class="section-title">POPULAR LISTS</h2>
@@ -243,27 +238,23 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
     text-align: center;
     border-bottom: 1px solid #2c3440;
 }
-
 .user-stats-grid {
     display: flex;
     justify-content: center;
     gap: 80px;
     flex-wrap: wrap;
 }
-
 .user-stat-number {
     font-size: 2rem;
     font-weight: 700;
     color: #00e054;
     font-family: 'Libre Baskerville', serif;
 }
-
 .user-stat-label {
     color: #99aabb;
     margin-top: 8px;
     font-size: 0.85rem;
 }
-
 .hero-subtitle {
     font-size: 0.9rem;
     line-height: 1.6;
@@ -274,7 +265,6 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
     margin-left: auto;
     margin-right: auto;
 }
-
 .watchlist-status-badge {
     display: inline-block;
     padding: 3px 8px;
@@ -283,17 +273,14 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
     font-weight: 600;
     margin-top: 8px;
 }
-
 .status-to-watch {
     background: #f5c518;
     color: #14181c;
 }
-
 .status-watching {
     background: #00c2ff;
     color: #14181c;
 }
-
 .status-watched {
     background: #00e054;
     color: #14181c;
@@ -303,71 +290,84 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
 <!-- JavaScript for Modals (only needed when logged out) -->
 <?php if (!isset($_SESSION['user_id'])): ?>
 <script>
-    const loginModal = document.getElementById('loginModal');
-    const signupModal = document.getElementById('signupModal');
-    const showLoginBtn = document.getElementById('showLoginBtn');
-    const showSignupBtn = document.getElementById('showSignupBtn');
-    const heroGetStartedBtn = document.getElementById('heroGetStartedBtn');
-    const closeLogin = document.getElementById('closeLogin');
-    const closeSignup = document.getElementById('closeSignup');
-    const switchToSignup = document.getElementById('switchToSignup');
-    const switchToLogin = document.getElementById('switchToLogin');
+    // Wait for DOM to fully load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get modal elements
+        const loginModal = document.getElementById('loginModal');
+        const signupModal = document.getElementById('signupModal');
+        const showLoginBtn = document.getElementById('showLoginBtn');
+        const showSignupBtn = document.getElementById('showSignupBtn');
+        const heroGetStartedBtn = document.getElementById('heroGetStartedBtn');
+        const closeLogin = document.getElementById('closeLogin');
+        const closeSignup = document.getElementById('closeSignup');
+        const switchToSignup = document.getElementById('switchToSignup');
+        const switchToLogin = document.getElementById('switchToLogin');
 
-    if (showLoginBtn) {
-        showLoginBtn.onclick = function(e) {
-            e.preventDefault();
-            loginModal.style.display = 'flex';
+        // Function to open signup modal
+        function openSignupModal(e) {
+            if (e) e.preventDefault();
+            if (signupModal) {
+                signupModal.style.display = 'flex';
+            } else {
+                window.location.href = 'register.php';
+            }
         }
-    }
 
-    if (showSignupBtn) {
-        showSignupBtn.onclick = function(e) {
-            e.preventDefault();
-            signupModal.style.display = 'flex';
+        // Function to open login modal
+        function openLoginModal(e) {
+            if (e) e.preventDefault();
+            if (loginModal) {
+                loginModal.style.display = 'flex';
+            }
         }
-    }
 
-    if (heroGetStartedBtn) {
-        heroGetStartedBtn.onclick = function(e) {
-            e.preventDefault();
-            signupModal.style.display = 'flex';
+        if (showLoginBtn) {
+            showLoginBtn.onclick = openLoginModal;
         }
-    }
 
-    if (closeLogin) {
-        closeLogin.onclick = function() {
-            loginModal.style.display = 'none';
+        if (showSignupBtn) {
+            showSignupBtn.onclick = openSignupModal;
         }
-    }
-    if (closeSignup) {
-        closeSignup.onclick = function() {
-            signupModal.style.display = 'none';
-        }
-    }
 
-    if (switchToSignup) {
-        switchToSignup.onclick = function(e) {
-            e.preventDefault();
-            loginModal.style.display = 'none';
-            signupModal.style.display = 'flex';
+        if (heroGetStartedBtn) {
+            heroGetStartedBtn.onclick = openSignupModal;
         }
-    }
-    if (switchToLogin) {
-        switchToLogin.onclick = function(e) {
-            e.preventDefault();
-            signupModal.style.display = 'none';
-            loginModal.style.display = 'flex';
-        }
-    }
 
-    window.onclick = function(e) {
-        if (e.target == loginModal) {
-            loginModal.style.display = 'none';
+        if (closeLogin) {
+            closeLogin.onclick = function() {
+                loginModal.style.display = 'none';
+            }
         }
-        if (e.target == signupModal) {
-            signupModal.style.display = 'none';
+        if (closeSignup) {
+            closeSignup.onclick = function() {
+                signupModal.style.display = 'none';
+            }
         }
-    }
+
+        if (switchToSignup) {
+            switchToSignup.onclick = function(e) {
+                e.preventDefault();
+                loginModal.style.display = 'none';
+                signupModal.style.display = 'flex';
+            }
+        }
+        if (switchToLogin) {
+            switchToLogin.onclick = function(e) {
+                e.preventDefault();
+                signupModal.style.display = 'none';
+                loginModal.style.display = 'flex';
+            }
+        }
+
+        window.onclick = function(e) {
+            if (e.target == loginModal) {
+                loginModal.style.display = 'none';
+            }
+            if (e.target == signupModal) {
+                signupModal.style.display = 'none';
+            }
+        }
+    });
 
     function showError(errorElement, errorTextElement, message) {
         errorTextElement.textContent = message;
@@ -377,11 +377,14 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
         }, 5000);
     }
 
+    // Handle Login Form Submission with AJAX
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.onsubmit = function(e) {
             e.preventDefault();
+            
             const formData = new FormData(loginForm);
+            
             fetch('/movie_watchlist/login_process.php', {
                 method: 'POST',
                 body: formData
@@ -389,7 +392,11 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    window.location.href = '/movie_watchlist/index.php';
+                    if (data.is_admin) {
+                        window.location.href = '/movie_watchlist/admin/dashboard.php';
+                    } else {
+                        window.location.href = '/movie_watchlist/index.php';
+                    }
                 } else {
                     showError(
                         document.getElementById('loginError'),
@@ -398,15 +405,20 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
                     );
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     }
 
+    // Handle Signup Form Submission with AJAX
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
         signupForm.onsubmit = function(e) {
             e.preventDefault();
+            
             const formData = new FormData(signupForm);
+            
             fetch('/movie_watchlist/register_process.php', {
                 method: 'POST',
                 body: formData
@@ -423,10 +435,27 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
                     );
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     }
 </script>
 <?php endif; ?>
+
+<!-- Make GET STARTED button trigger CREATE ACCOUNT button -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var getStartedBtn = document.getElementById('heroGetStartedBtn');
+        var createAccountBtn = document.getElementById('showSignupBtn');
+        
+        if (getStartedBtn && createAccountBtn) {
+            getStartedBtn.onclick = function(e) {
+                e.preventDefault();
+                createAccountBtn.click();
+            };
+        }
+    });
+</script>
 
 <?php include 'includes/footer.php'; ?>

@@ -901,3 +901,371 @@ h1, h2, h3, h4, h5, h6 {
     background: #00e054;
     color: #14181c;
 }
+
+/* User Name Display */
+/* User Name Display - White Bold */
+.user-name {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-right: 1px;
+}
+
+/* Footer Styles - Clean and Big */
+.footer {
+    background: transparent;
+    padding: 30px 30px 20px;
+    border-top: none;
+    margin-top: 1px;
+    width: 100%;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 45px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+.footer-link {
+    color: #99aabb !important;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: #c41e3a !important;
+}
+
+.footer-copyright {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #556677;
+    margin-top: 15px;
+}
+
+/* User Dropdown Menu - Click to Toggle */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-name {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    transition: background 0.2s;
+    display: inline-block;
+}
+
+.user-name:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background: #1c2228;
+    min-width: 160px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    z-index: 100;
+    border: 1px solid #2c3440;
+}
+
+.dropdown-content a {
+    color: #99aabb;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.dropdown-content a:hover {
+    background: #c41e3a;
+    color: #ffffff;
+}
+
+/* Logout Modal Styles */
+.logout-modal {
+    max-width: 400px;
+    text-align: center;
+}
+
+.logout-message {
+    color: #99aabb;
+    font-size: 1rem;
+    margin-bottom: 25px;
+}
+
+.logout-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-logout-yes {
+    background: #c41e3a;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-logout-yes:hover {
+    background: #a01830;
+}
+
+.btn-logout-no {
+    background: #2c3440;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-logout-no:hover {
+    background: #3a454d;
+}
+
+/* Forgot Password Modal Success */
+.modal-success {
+    background: rgba(0, 224, 84, 0.15);
+    border: 1px solid #00e054;
+    color: #00e054;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+.forgot-message {
+    color: #99aabb;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Admin Link Style */
+.admin-link {
+    color: #c41e3a !important;
+    background: rgba(196, 30, 58, 0.15);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.admin-link:hover {
+    background: #c41e3a;
+    color: white !important;
+}
+
+/* Choice Modal Styles */
+.choice-modal {
+    max-width: 400px;
+    text-align: center;
+}
+
+.choice-logo {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.choice-title {
+    font-size: 1.3rem;
+    color: white;
+    margin-bottom: 25px;
+}
+
+.choice-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.choice-btn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    background: #2c3440;
+    border: 1px solid #3a454d;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: left;
+}
+
+.choice-btn:hover {
+    border-color: #c41e3a;
+    background: #1c2228;
+}
+
+.choice-icon {
+    font-size: 2rem;
+}
+
+.choice-text strong {
+    display: block;
+    color: white;
+    font-size: 1rem;
+}
+
+.choice-text small {
+    color: #99aabb;
+    font-size: 0.75rem;
+}
+
+.choice-footer {
+    color: #99aabb;
+    font-size: 0.85rem;
+    border-top: 1px solid #2c3440;
+    padding-top: 20px;
+    margin-top: 10px;
+}
+
+.choice-footer a {
+    color: #c41e3a;
+    text-decoration: none;
+}
+
+.back-to-choice {
+    color: #99aabb;
+    cursor: pointer;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    display: inline-block;
+}
+
+.back-to-choice:hover {
+    color: #c41e3a;
+}
+
+/* Login Type Dropdown */
+.login-type-dropdown {
+    position: relative;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.dropdown-selected {
+    background: #2c3440;
+    border: 1px solid #3a454d;
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    transition: all 0.2s;
+}
+
+.dropdown-selected:hover {
+    border-color: #c41e3a;
+}
+
+.dropdown-arrow {
+    font-size: 0.7rem;
+    color: #99aabb;
+    transition: transform 0.2s;
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #1c2228;
+    border: 1px solid #3a454d;
+    border-radius: 8px;
+    margin-top: 5px;
+    display: none;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.dropdown-options.show {
+    display: block;
+}
+
+.dropdown-option {
+    padding: 12px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #99aabb;
+    transition: all 0.2s;
+}
+
+.dropdown-option:hover {
+    background: #c41e3a;
+    color: white;
+}
+
+.dropdown-option span {
+    font-size: 1.1rem;
+}
+
+.login-form-content {
+    transition: all 0.3s ease;
+}
+
+.stat-card {
+    background: #1c2228;
+    padding: 25px 20px;
+    border-radius: 16px;
+    border: 1px solid #2c3440;
+    text-align: center;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: #c41e3a;
+    background: #242c34;
+}
+
+.stat-card .stat-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00e054;
+    font-family: 'Libre Baskerville', serif;
+}
+
+.stat-card .stat-label {
+    color: #99aabb;
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
