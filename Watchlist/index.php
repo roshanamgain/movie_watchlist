@@ -173,7 +173,7 @@ $recentActivity = $stmt->fetchAll();
             <div class="activity-list">
                 <?php foreach ($recentActivity as $activity): ?>
                     <div class="activity-item">
-                        <div class="activity-avatar">🎭</div>
+                        <div class="activity-avatar">👤</div>
                         <div class="activity-details">
                             <strong><?php echo htmlspecialchars($activity['FullName']); ?></strong> added 
                             <span class="movie-title"><?php echo htmlspecialchars($activity['Title']); ?></span> 
@@ -185,21 +185,6 @@ $recentActivity = $stmt->fetchAll();
             </div>
         </div>
 
-        <!-- Call to Action -->
-        <div class="cta-section">
-            <div class="cta-content">
-                <h2>Create Your Own Personal Watchlist</h2>
-                <p>Join thousands of film lovers who use MovieWatchlist to track every film they've ever watched.</p>
-                <div class="cta-features">
-                    <span>✅ Track watched movies</span>
-                    <span>⭐ Rate and review</span>
-                    <span>📋 Create lists</span>
-                    <span>👥 Follow friends</span>
-                </div>
-                <a href="javascript:void(0)" class="cta-btn-large" id="heroGetStartedBtn2">Get Started — It's Free!</a>
-            </div>
-        </div>
-    </div>
 
     <style>
         .public-watchlist-container {
@@ -450,6 +435,13 @@ $recentActivity = $stmt->fetchAll();
             .cta-features span {
                 font-size: 0.7rem;
             }
+        }
+    </style>
+
+    <!-- Hide any error boxes on public page -->
+    <style>
+        .modal-error {
+            display: none !important;
         }
     </style>
 
@@ -715,4 +707,17 @@ $recentActivity = $stmt->fetchAll();
 }
 </style>
 
+<!-- Hide any error boxes -->
+<style>
+    .modal-error {
+        display: none !important;
+    }
+</style>
+
 <?php include '../includes/footer.php'; ?>
+
+<style>
+    .modal-error {
+        display: none !important;
+    }
+</style>

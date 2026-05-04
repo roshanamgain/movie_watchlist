@@ -18,7 +18,7 @@ $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <div class="members-grid">
         <?php foreach ($members as $member): ?>
         <div class="member-card">
-            <div class="member-avatar">🎭</div>
+            <div class="member-avatar">👤</div>
             <div class="member-info">
                 <h3><?php echo htmlspecialchars($member['FullName']); ?></h3>
                 
