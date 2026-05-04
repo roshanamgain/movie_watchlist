@@ -154,8 +154,88 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
     <div class="social-text-section">
         <a href="javascript:void(0)" class="social-btn" id="heroGetStartedBtn">GET STARTED — IT'S FREE!</a>
         <p class="social-text">The social network for film lovers.</p>
+       <div class="movie-section">
+  
+       <div style="height: 60px;"></div>
+       
+              <div class="film-strip">
+        <?php 
+        // Get only 6 popular movies
+        $stmt = $pdo->query("SELECT * FROM tblmovie ORDER BY TMDBRating DESC LIMIT 6");
+        $popularSix = $stmt->fetchAll();
+        ?>
+        <?php foreach ($popularSix as $film): ?>
+        <div class="movie-card" onclick="location.href='movies/details.php?id=<?php echo $film['MovieID']; ?>'">
+            <div class="movie-poster">
+                <?php if (!empty($film['PosterURL'])): ?>
+                    <img src="<?php echo $film['PosterURL']; ?>" alt="<?php echo htmlspecialchars($film['Title']); ?>" class="movie-poster-img">
+                <?php else: ?>
+                    <span class="movie-poster-placeholder">🎬</span>
+                <?php endif; ?>
+            </div>
+            <!-- No text below poster -->
+        </div>
+        <?php endforeach; ?>
     </div>
+</div>
 
+<!-- Heading -->
+<div class="features-heading">
+    <h2>MovieWatchlist lets you...</h2>
+</div>
+
+<!-- Features Section - 3x2 Grid (Emoji Left, Text Right) -->
+<div class="features-container">
+    <div class="features-grid">
+        <!-- Box 1 -->
+        <div class="feature-box">
+            <div class="feature-emoji">📋</div>
+            <div class="feature-text">
+                <div class="feature-title">Keep track of every film you've ever watched or just start from the day you join</div>
+            </div>
+        </div>
+        
+        <!-- Box 2 -->
+        <div class="feature-box">
+            <div class="feature-emoji">❤️</div>
+            <div class="feature-text">
+                <div class="feature-title">Show some love for your favorite films, lists and reviews with a "like"</div>
+            </div>
+        </div>
+        
+        <!-- Box 3 -->
+        <div class="feature-box">
+            <div class="feature-emoji">✍️</div>
+            <div class="feature-text">
+                <div class="feature-title">Write and share reviews, and follow friends and other members to read theirs</div>
+            </div>
+        </div>
+        
+        <!-- Box 4 -->
+        <div class="feature-box">
+            <div class="feature-emoji">⭐</div>
+            <div class="feature-text">
+                <div class="feature-title">Rate each film on a ten-star scale (with halves) to record and share your reaction.</div>
+            </div>
+        </div>
+        
+        <!-- Box 5 -->
+        <div class="feature-box">
+            <div class="feature-emoji">📓</div>
+            <div class="feature-text">
+                <div class="feature-title">Keep a diary of films you are watching, have watched, and want to watch.</div>
+            </div>
+        </div>
+        
+        <!-- Box 6 -->
+        <div class="feature-box">
+            <div class="feature-emoji">📝</div>
+            <div class="feature-text">
+                <div class="feature-title">Compile and share lists of films on any topic and keep a watchlist of films./div>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="movie-section">
         <div class="section-header">
             <h2 class="section-title">POPULAR THIS WEEK</h2>
@@ -180,7 +260,8 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
             <?php endforeach; ?>
         </div>
     </div>
-
+</div>
+    </div>
     <div class="reviews-section">
         <div class="section-header">
             <h2 class="section-title">POPULAR REVIEWS THIS WEEK</h2>
