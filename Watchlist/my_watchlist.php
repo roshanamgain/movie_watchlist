@@ -1,31 +1,23 @@
 <?php
 /**
- * My Watchlist - Display User's Watchlist
- * Author: Bishnu - Watchlist Component
- * Date: May 2026
- * 
- * This file displays the user's watchlist with:
- * - List all movies in watchlist (READ operation)
- * - Filter by status and priority
- * - Edit, Update Status, and Delete actions
- * - Statistics cards showing totals
+ * My Watchlist - Complete Version with All Features
  */
 
 require_once '../includes/config.php';
 require_once '../includes/validation.php';
 
-// Check if user is logged in
+// Check login
 requireLogin();
 
 $user_id = $_SESSION['user_id'];
 $success_msg = isset($_GET['msg']) ? sanitizeText($_GET['msg']) : '';
 $error_msg = isset($_GET['error']) ? sanitizeText($_GET['error']) : '';
 
-// Get filter parameters
+// Get filters
 $status_filter = isset($_GET['status']) ? validateStatus($_GET['status']) : null;
 $priority_filter = isset($_GET['priority']) ? validatePriority($_GET['priority']) : null;
 
-// Build query conditions
+// Build query
 $conditions = ["w.UserID = :uid"];
 $params = [':uid' => $user_id];
 
@@ -42,9 +34,9 @@ if ($priority_filter) {
 $whereClause = implode(" AND ", $conditions);
 
 try {
-    // Get user's watchlist with movie details
+    // Get watchlist with full details
     $sql = "
-        SELECT w.*, m.Title, m.Genre, m.ReleaseYear, m.TMDBRating
+        SELECT w.*, m.Title, m.Genre, m.ReleaseYear
         FROM tblwatchlist w
         JOIN tblmovie m ON w.MovieID = m.MovieID
         WHERE $whereClause
@@ -57,7 +49,7 @@ try {
     $stmt->execute($params);
     $watchlist = $stmt->fetchAll();
     
-    // Get statistics for dashboard
+    // Get statistics
     $statsStmt = $conn->prepare("
         SELECT 
             COUNT(*) as total,
@@ -70,7 +62,7 @@ try {
     $stats = $statsStmt->fetch();
     
 } catch (PDOException $e) {
-    $error_msg = "Error loading watchlist: " . $e->getMessage();
+    $error_msg = "Error: " . $e->getMessage();
     $watchlist = [];
     $stats = ['total' => 0, 'to_watch' => 0, 'watching_now' => 0, 'watched' => 0];
 }
@@ -85,7 +77,7 @@ include '../includes/header.php';
         <a href="add.php" class="btn btn-primary">➕ Add Movie</a>
     </div>
     
-    <!-- Success/Error Messages -->
+    <!-- Messages -->
     <?php if ($success_msg): ?>
         <div class="alert alert-success">✅ <?php echo $success_msg; ?></div>
     <?php endif; ?>
@@ -119,16 +111,16 @@ include '../includes/header.php';
         <form method="GET" action="">
             <select name="status">
                 <option value="">All Status</option>
-                <option value="To Watch" <?php echo $status_filter == 'To Watch' ? 'selected' : ''; ?>>📋 To Watch</option>
-                <option value="Watching Now" <?php echo $status_filter == 'Watching Now' ? 'selected' : ''; ?>>▶️ Watching Now</option>
-                <option value="Watched" <?php echo $status_filter == 'Watched' ? 'selected' : ''; ?>>✅ Watched</option>
+                <option value="To Watch" <?php echo $status_filter == 'To Watch' ? 'selected' : ''; ?>>To Watch</option>
+                <option value="Watching Now" <?php echo $status_filter == 'Watching Now' ? 'selected' : ''; ?>>Watching Now</option>
+                <option value="Watched" <?php echo $status_filter == 'Watched' ? 'selected' : ''; ?>>Watched</option>
             </select>
             
             <select name="priority">
                 <option value="">All Priority</option>
-                <option value="High" <?php echo $priority_filter == 'High' ? 'selected' : ''; ?>>🔴 High</option>
-                <option value="Medium" <?php echo $priority_filter == 'Medium' ? 'selected' : ''; ?>>🟡 Medium</option>
-                <option value="Low" <?php echo $priority_filter == 'Low' ? 'selected' : ''; ?>>🟢 Low</option>
+                <option value="High" <?php echo $priority_filter == 'High' ? 'selected' : ''; ?>>High Priority</option>
+                <option value="Medium" <?php echo $priority_filter == 'Medium' ? 'selected' : ''; ?>>Medium Priority</option>
+                <option value="Low" <?php echo $priority_filter == 'Low' ? 'selected' : ''; ?>>Low Priority</option>
             </select>
             
             <button type="submit" class="btn btn-primary">Apply Filters</button>
@@ -140,73 +132,54 @@ include '../includes/header.php';
     <?php if (empty($watchlist)): ?>
         <div class="empty-message">
             <p>📭 Your watchlist is empty.</p>
-            <p><a href="add.php" class="btn btn-primary">➕ Add Your First Movie</a></p>
-            <p>or <a href="find.php">🔍 Search for movies</a> to add</p>
+            <a href="add.php" class="btn btn-primary">➕ Add Your First Movie</a>
         </div>
     <?php else: ?>
-        <div style="overflow-x: auto;">
-            <table class="watchlist-table">
-                <thead>
-                    <tr>
-                        <th>Movie Title</th>
-                        <th>Genre</th>
-                        <th>Year</th>
-                        <th>Status</th>
-                        <th>Priority</th>
-                        <th>Your Rating</th>
-                        <th>Added On</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($watchlist as $item): ?>
-                        <tr>
-                            <td>
-                                <strong><?php echo htmlspecialchars($item['Title']); ?></strong>
-                                <?php if (!empty($item['PersonalNotes'])): ?>
-                                    <br>
-                                    <small style="color:#6c757d;">📝 <?php echo htmlspecialchars(substr($item['PersonalNotes'], 0, 50)); ?></small>
-                                <?php endif; ?>
-                             </td>
-                            <td><?php echo htmlspecialchars($item['Genre']); ?> </td>
-                            <td><?php echo $item['ReleaseYear']; ?> </td>
-                            <td>
-                                <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $item['Status'])); ?>">
-                                    <?php echo $item['Status']; ?>
-                                </span>
-                             </td>
-                            <td>
-                                <span class="priority-badge priority-<?php echo strtolower($item['Priority']); ?>">
-                                    <?php echo $item['Priority']; ?>
-                                </span>
-                             </td>
-                            <td>
-                                <?php if ($item['PersonalRating']): ?>
-                                    <strong><?php echo $item['PersonalRating']; ?>/10</strong>
-                                    <?php if ($item['PersonalRating'] >= 8): ?>⭐
-                                    <?php elseif ($item['PersonalRating'] >= 5): ?>👍
-                                    <?php else: ?>👎
-                                    <?php endif; ?>
-                                <?php else: ?>
-                                    <span style="color:#6c757d;">Not rated</span>
-                                <?php endif; ?>
-                             </td>
-                            <td><?php echo date('M d, Y', strtotime($item['AddedDate'])); ?> </td>
-                            <td class="actions">
-                                <a href="edit.php?id=<?php echo $item['WatchlistID']; ?>" class="edit" title="Edit">✏️ Edit</a>
-                                <a href="update_status.php?id=<?php echo $item['WatchlistID']; ?>" class="status-btn" title="Update Status">📝 Status</a>
-                                <a href="remove.php?id=<?php echo $item['WatchlistID']; ?>" class="delete" title="Remove" 
-                                   onclick="return confirm('Remove &quot;<?php echo htmlspecialchars($item['Title']); ?>&quot; from your watchlist?')">🗑️ Delete</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="text-center mt-20" style="color:#6c757d; font-size:12px;">
-            Total: <?php echo count($watchlist); ?> movies in your watchlist
-        </div>
+        <table class="watchlist-table">
+            <thead>
+                <tr>
+                    <th>Movie Title</th>
+                    <th>Genre</th>
+                    <th>Year</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Rating</th>
+                    <th>Added</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($watchlist as $item): ?>
+                <tr>
+                    <td>
+                        <strong><?php echo htmlspecialchars($item['Title']); ?></strong>
+                        <?php if (!empty($item['PersonalNotes'])): ?>
+                            <br><small><?php echo htmlspecialchars(substr($item['PersonalNotes'], 0, 40)); ?></small>
+                        <?php endif; ?>
+                    </td>
+                    <td><?php echo htmlspecialchars($item['Genre']); ?></td>
+                    <td><?php echo $item['ReleaseYear']; ?></td>
+                    <td>
+                        <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $item['Status'])); ?>">
+                            <?php echo $item['Status']; ?>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="priority-badge priority-<?php echo strtolower($item['Priority']); ?>">
+                            <?php echo $item['Priority']; ?>
+                        </span>
+                    </td>
+                    <td><?php echo $item['PersonalRating'] ? $item['PersonalRating'] . '/10' : '-'; ?></td>
+                    <td><?php echo date('M d, Y', strtotime($item['AddedDate'])); ?></td>
+                    <td class="actions">
+                        <a href="edit.php?id=<?php echo $item['WatchlistID']; ?>" class="edit">✏️ Edit</a>
+                        <a href="update_status.php?id=<?php echo $item['WatchlistID']; ?>" class="status-btn">📝 Status</a>
+                        <a href="remove.php?id=<?php echo $item['WatchlistID']; ?>" class="delete" onclick="return confirm('Remove this movie?')">🗑️ Delete</a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     <?php endif; ?>
 </div>
 
