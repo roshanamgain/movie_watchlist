@@ -1,6 +1,6 @@
 <?php
 /**
- * My Watchlist - Complete Version with All Features
+ * My Watchlist - Complete Version with Add Button
  */
 
 require_once '../includes/config.php';
@@ -34,7 +34,7 @@ if ($priority_filter) {
 $whereClause = implode(" AND ", $conditions);
 
 try {
-    // Get watchlist with full details
+    // Get watchlist
     $sql = "
         SELECT w.*, m.Title, m.Genre, m.ReleaseYear
         FROM tblwatchlist w
@@ -71,7 +71,7 @@ include '../includes/header.php';
 ?>
 
 <div class="container">
-    <!-- Page Header -->
+    <!-- PAGE HEADER WITH ADD BUTTON -->
     <div class="page-header">
         <h1>📋 My Watchlist</h1>
         <a href="add.php" class="btn btn-primary">➕ Add Movie</a>
@@ -89,10 +89,6 @@ include '../includes/header.php';
     <!-- Statistics Cards -->
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-number"><?php echo $stats['total']; ?></div>
-            <div class="stat-label">Total Movies</div>
-        </div>
-        <div class="stat-card">
             <div class="stat-number"><?php echo $stats['to_watch']; ?></div>
             <div class="stat-label">📋 To Watch</div>
         </div>
@@ -103,6 +99,10 @@ include '../includes/header.php';
         <div class="stat-card">
             <div class="stat-number"><?php echo $stats['watched']; ?></div>
             <div class="stat-label">✅ Watched</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number"><?php echo $stats['total']; ?></div>
+            <div class="stat-label">Total Movies</div>
         </div>
     </div>
     
@@ -132,7 +132,11 @@ include '../includes/header.php';
     <?php if (empty($watchlist)): ?>
         <div class="empty-message">
             <p>📭 Your watchlist is empty.</p>
+            <p>Start adding movies to your watchlist and keep track of what you want to watch!</p>
             <a href="add.php" class="btn btn-primary">➕ Add Your First Movie</a>
+            <p style="margin-top: 15px;">
+                or <a href="../movies.php" style="color: #e50914;">Browse Movies</a>
+            </p>
         </div>
     <?php else: ?>
         <table class="watchlist-table">
@@ -154,7 +158,7 @@ include '../includes/header.php';
                     <td>
                         <strong><?php echo htmlspecialchars($item['Title']); ?></strong>
                         <?php if (!empty($item['PersonalNotes'])): ?>
-                            <br><small><?php echo htmlspecialchars(substr($item['PersonalNotes'], 0, 40)); ?></small>
+                            <br><small style="color:#6c757d;">📝 <?php echo htmlspecialchars(substr($item['PersonalNotes'], 0, 40)); ?></small>
                         <?php endif; ?>
                     </td>
                     <td><?php echo htmlspecialchars($item['Genre']); ?></td>
