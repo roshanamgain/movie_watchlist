@@ -43,7 +43,7 @@ $recentActivity = $stmt->fetchAll();
     <!-- Profile Header -->
     <div class="profile-header">
         <div class="profile-avatar">
-            <div class="avatar-inner">🎭</div>
+            <div class="avatar-inner">👤</div>
         </div>
         <div class="profile-info">
             <h1><?php echo htmlspecialchars($user['FullName']); ?></h1>

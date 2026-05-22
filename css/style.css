@@ -1423,22 +1423,16 @@ div[class*="modal-error"] {
     display: none;
 }
 
-/* Heading above feature boxes */
-.features-heading {
-    text-align: center;
-    margin: 30px 0 20px;
+/* Heading position - exactly between left and first box */
+.features-header-left {
+    margin-bottom: 25px;
+    margin-left: 30px;  /* Adjust this value */
 }
 
-.features-heading h2 {
+.features-header-left h2 {
     font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 500;
     color: white;
-    letter-spacing: 0.5px;
-}
-
-@media (max-width: 768px) {
-    .features-heading h2 {
-        font-size: 1rem;
-    }
+    margin: 0;
 }

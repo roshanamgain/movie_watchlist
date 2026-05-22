@@ -180,7 +180,7 @@ $loggedInHeroImage = '/movie_watchlist/images/bg-login.jpg';
 </div>
 
 <!-- Heading -->
-<div class="features-heading">
+<div class="features-head">
     <h2>MovieWatchlist lets you...</h2>
 </div>
 
